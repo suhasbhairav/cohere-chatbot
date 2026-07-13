@@ -1,8 +1,8 @@
 @import "tailwindcss";
 
 :root {
-  --background: #ffffff;
-  --foreground: #171717;
+  --background: #f2f5fb;
+  --foreground: #141721;
 }
 
 @theme inline {
@@ -12,15 +12,87 @@
   --font-mono: var(--font-geist-mono);
 }
 
-@media (prefers-color-scheme: dark) {
-  :root {
-    --background: #0a0a0a;
-    --foreground: #ededed;
-  }
-}
-
 body {
   background: var(--background);
   color: var(--foreground);
-  font-family: Arial, Helvetica, sans-serif;
+  font-family: var(--font-geist-sans), Arial, Helvetica, sans-serif;
+}
+
+button,
+textarea {
+  font: inherit;
+}
+
+.chat-scroll {
+  background:
+    linear-gradient(#fbfcff, #fbfcff) padding-box,
+    linear-gradient(90deg, transparent calc(100% - 16px), #e6ecf7 100%)
+      border-box;
+  overscroll-behavior: contain;
+  scrollbar-color: #6f7f9f #e6ecf7;
+  scrollbar-gutter: stable;
+  scrollbar-width: thin;
+}
+
+.chat-scroll::-webkit-scrollbar {
+  width: 14px;
+}
+
+.chat-scroll::-webkit-scrollbar-track {
+  background: #e6ecf7;
+  border-left: 1px solid #d7e0ee;
+}
+
+.chat-scroll::-webkit-scrollbar-thumb {
+  background: #6f7f9f;
+  border: 4px solid #e6ecf7;
+  border-radius: 999px;
+  background-clip: content-box;
+}
+
+.chat-scroll::-webkit-scrollbar-thumb:hover {
+  background: #3e4f74;
+  background-clip: content-box;
+}
+
+.message-bubble {
+  max-width: min(82%, 44rem);
+  border-radius: 22px;
+  padding: 0.85rem 1rem;
+  overflow-wrap: anywhere;
+}
+
+.typing-dot {
+  width: 0.45rem;
+  height: 0.45rem;
+  border-radius: 999px;
+  background: currentColor;
+  animation: typingPulse 1s ease-in-out infinite;
+}
+
+.animation-delay-150 {
+  animation-delay: 150ms;
+}
+
+.animation-delay-300 {
+  animation-delay: 300ms;
+}
+
+@keyframes typingPulse {
+  0%,
+  100% {
+    opacity: 0.25;
+    transform: translateY(0);
+  }
+
+  50% {
+    opacity: 0.9;
+    transform: translateY(-2px);
+  }
+}
+
+@media (max-width: 640px) {
+  .message-bubble {
+    max-width: 88%;
+  }
 }

@@ -1,36 +1,119 @@
-This is a [Next.js](https://nextjs.org) project bootstrapped with [`create-next-app`](https://github.com/vercel/next.js/tree/canary/packages/create-next-app).
+# Suhas Bhairav Cohere Chat
+
+![Next.js](https://img.shields.io/badge/Next.js-16-black?logo=nextdotjs)
+![React](https://img.shields.io/badge/React-19-61DAFB?logo=react&logoColor=111)
+![OpenRouter](https://img.shields.io/badge/OpenRouter-Cohere%20North%20Mini%20Code-172554)
+![License: MIT](https://img.shields.io/badge/License-MIT-green.svg)
+![Made by Suhas Bhairav](https://img.shields.io/badge/Made%20by-Suhas%20Bhairav-0f172a)
+
+A polished, mobile responsive, fully streaming chatbot powered by OpenRouter and `cohere/north-mini-code:free`. The interface is designed like a modern chat app with fixed viewport layout, internal message scrolling, streaming assistant responses, prompt suggestions, and clean mobile behavior.
+
+Created by [Suhas Bhairav](https://suhasbhairav.com).
+
+## Features
+
+- Fully streaming OpenRouter responses
+- Uses `cohere/north-mini-code:free`
+- ChatGPT-style responsive chat UI
+- Scrollable chat area that keeps the card fixed in place
+- Stop button for active streams
+- Auto-growing input box
+- Mobile-first layout with polished desktop spacing
+- Server-side API route at `app/api/chat/route.js`
+- Logs reasoning token usage when OpenRouter includes it in the final stream chunk
+
+## Tech Stack
+
+- [Next.js](https://nextjs.org)
+- [React](https://react.dev)
+- [Tailwind CSS](https://tailwindcss.com)
+- [OpenRouter SDK](https://www.npmjs.com/package/@openrouter/sdk)
 
 ## Getting Started
 
-First, run the development server:
+Install dependencies:
+
+```bash
+npm install
+```
+
+Create an environment file:
+
+```bash
+cp .env.example .env.local
+```
+
+Add your OpenRouter key:
+
+```bash
+OPENROUTER_API_KEY=your_openrouter_api_key
+NEXT_PUBLIC_SITE_URL=http://localhost:3000
+```
+
+Run the development server:
 
 ```bash
 npm run dev
-# or
-yarn dev
-# or
-pnpm dev
-# or
-bun dev
 ```
 
-Open [http://localhost:3000](http://localhost:3000) with your browser to see the result.
+Open [http://localhost:3000](http://localhost:3000).
 
-You can start editing the page by modifying `app/page.js`. The page auto-updates as you edit the file.
+## OpenRouter Model
 
-This project uses [`next/font`](https://nextjs.org/docs/app/building-your-application/optimizing/fonts) to automatically optimize and load [Geist](https://vercel.com/font), a new font family for Vercel.
+This template calls:
 
-## Learn More
+```txt
+cohere/north-mini-code:free
+```
 
-To learn more about Next.js, take a look at the following resources:
+The API route streams plain text back to the browser, making it simple for the client to append chunks as they arrive.
 
-- [Next.js Documentation](https://nextjs.org/docs) - learn about Next.js features and API.
-- [Learn Next.js](https://nextjs.org/learn) - an interactive Next.js tutorial.
+## API Route
 
-You can check out [the Next.js GitHub repository](https://github.com/vercel/next.js) - your feedback and contributions are welcome!
+The chat endpoint lives at:
 
-## Deploy on Vercel
+```txt
+app/api/chat/route.js
+```
 
-The easiest way to deploy your Next.js app is to use the [Vercel Platform](https://vercel.com/new?utm_medium=default-template&filter=next.js&utm_source=create-next-app&utm_campaign=create-next-app-readme) from the creators of Next.js.
+It accepts:
 
-Check out our [Next.js deployment documentation](https://nextjs.org/docs/app/building-your-application/deploying) for more details.
+```json
+{
+  "messages": [
+    {
+      "role": "user",
+      "content": "How many r's are in the word strawberry?"
+    }
+  ]
+}
+```
+
+The OpenRouter SDK request uses the current SDK shape:
+
+```js
+await openRouter.chat.send({
+  chatRequest: {
+    model: "cohere/north-mini-code:free",
+    messages,
+    stream: true,
+  },
+});
+```
+
+## Scripts
+
+```bash
+npm run dev
+npm run build
+npm run start
+npm run lint
+```
+
+## Author
+
+[Suhas Bhairav](https://suhasbhairav.com)
+
+## License
+
+MIT License. See [LICENSE](./LICENSE).
