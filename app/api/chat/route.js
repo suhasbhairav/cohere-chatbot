@@ -1,3 +1,4 @@
+import { parseJsonRequest, validateRequestBody } from "@/lib/production-guardrails";
 import { OpenRouter } from "@openrouter/sdk";
 
 export const runtime = "nodejs";
@@ -32,7 +33,12 @@ export async function POST(request) {
     });
   }
 
-  const body = await request.json().catch(() => null);
+  const body = await parseJsonRequest(request);
+  const guardrail = validateRequestBody(body);
+  if (!guardrail.ok) {
+    return Response.json({ error: guardrail.error }, { status: guardrail.status });
+  }
+
   const messages = normalizeMessages(body?.messages);
 
   if (!messages.some((message) => message.role === "user")) {
